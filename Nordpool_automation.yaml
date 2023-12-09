@@ -8,7 +8,7 @@ trigger:
     enabled: true
   - platform: state
     entity_id:
-      - sensor.energi_data_service
+      - sensor.nordpool_kwh_dk1_dkk_3_10_025
     attribute: tomorrow_valid
     enabled: true
 condition:
@@ -22,7 +22,7 @@ action:
       minutes: 0
       seconds: 10
       milliseconds: 0
-    enabled: false
+    enabled: true
   - service: open_epaper_link.drawcustom
     target:
       entity_id:
