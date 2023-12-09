@@ -12,3 +12,5 @@ And when data it not available, it will show this:
 ![open_epaper_link 0000021f1f683b15](https://github.com/cokeman0/OpenEpaperElectricPriceTag/assets/6389802/397063e7-0a1c-41da-96ca-0bec35f1fea9)
 
 Create a now automation, switch to yaml mode, and paste content
+
+Font used: OpenSans-Regular.ttf and OpenSans-Semibold.ttf, they are placed in /media/fonts
