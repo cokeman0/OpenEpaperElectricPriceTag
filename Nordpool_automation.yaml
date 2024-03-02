@@ -36,9 +36,9 @@ action:
         - type: text
           value: "{{ currentprice }}"
           font: /media/fonts/OpenSans-Semibold.ttf
-          x: 36
+          x: 180
           "y": 2
-          size: 18
+          size: 24
           color: black
           anchor: rt
         - type: text
@@ -63,11 +63,11 @@ action:
             ['Mandag','Tirsdag','Onsdag','Torsdag','Fredag','Lørdag','Søndag'][now().weekday()]
             }} {{(now()|as_timestamp)|timestamp_custom("%H:%M", True) }}
           font: /media/fonts/OpenSans-Semibold.ttf
-          x: 148
+          x: 2
           "y": 2
           size: 16
           color: black
-          anchor: mt
+          anchor: lt
         - type: line
           x_start: 0
           x_end: 296
