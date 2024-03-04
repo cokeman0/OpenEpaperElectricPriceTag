@@ -80,9 +80,9 @@ action:
           x_start: "{{ spacing[0]|int-spacingwith }}"
           x_end: "{{ spacing[0]|int+spacingwith }}"
           y_start: >-
-            {{ grafbottom if pris2[0]|float == 9999.9999 else (grafbottom)-(pris2[0]|float*(maxgrafhigh)/highpricegraph) | int }}
+            {{ grafbottom if pris2[0]|float == 9999.9999 else (grafbottom)-([pris2[0]|float*(maxgrafhigh)/highpricegraph, 0] | max) | int }}
           y_end: "{{ grafbottom }}"
-          width: "{% if pris2[0]|float <= lowprice3 %}4{% else %}1{%endif%}"
+          width: "{% if pris2[0] | float <= lowprice3 and pris2[1] | float > 0 %}4{% else %}1{% endif %}"
           fill: >-
             {% if pris2[0]|float >= highprice3 %}red{% elif pris2[0]|float<= lowprice3 %}white{% else %}black{%endif%}
           outline: black
@@ -96,11 +96,11 @@ action:
           anchor: mt
         - type: text
           value: >-
-            {{ "NA" if pris2[0]|float == 9999.9999 else ((pris2[0]|float + priceCorrector) * priceMultiplicator)|round(2) }}
+            {{ "NA" if pris2[0]|float == 9999.9999 else ((pris2[0]|float + priceCorrector) * priceMultiplicator)|round(decimalPlaces) }}
           font: /media/fonts/OpenSans-Regular.ttf
           x: "{{ spacing[0] }}"
           "y": >-
-            {{ grafbottom-grafpriceoffset if pris2[0]|float == 9999.9999 else ((grafbottom)-(pris2[0]|float*(maxgrafhigh)/highpricegraph)|int)
+            {{ grafbottom-grafpriceoffset if pris2[0]|float == 9999.9999 else ((grafbottom)-([pris2[0]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int)
               - grafpriceoffset }}
           size: "{{ grafpricesize }}"
           color: "{% if pris2[0]|float >= highprice3 %}red{% else %}black{%endif%}"
@@ -110,9 +110,9 @@ action:
           x_start: "{{ spacing[1]|int-spacingwith }}"
           x_end: "{{ spacing[1]|int+spacingwith }}"
           y_start: >-
-            {{ grafbottom if pris2[1]|float == 9999.9999 else (grafbottom)-(pris2[1]|float*(maxgrafhigh)/highpricegraph)|int }}
+            {{ grafbottom if pris2[1]|float == 9999.9999 else (grafbottom)-([pris2[1]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int }}
           y_end: "{{ grafbottom }}"
-          width: "{% if pris2[1]|float <= lowprice3 %}4{% else %}1{%endif%}"
+          width: "{% if pris2[1] | float <= lowprice3 and pris2[1] | float > 0 %}4{% else %}1{% endif %}"
           fill: >-
             {% if pris2[1]|float >= highprice3 %}red{% elif pris2[1]|float <= lowprice3 %}white{% else %}black{%endif%}
           outline: black
@@ -126,11 +126,11 @@ action:
           anchor: mt
         - type: text
           value: >-
-            {{ "NA" if pris2[1]|float == 9999.9999 else ((pris2[1]|float + priceCorrector) * priceMultiplicator)|round(2) }}
+            {{ "NA" if pris2[1]|float == 9999.9999 else ((pris2[1]|float + priceCorrector) * priceMultiplicator)|round(decimalPlaces) }}
           font: /media/fonts/OpenSans-Regular.ttf
           x: "{{ spacing[1] }}"
           "y": >-
-            {{ grafbottom-grafpriceoffset if pris2[1]|float == 9999.9999 else ((grafbottom)-(pris2[1]|float*(maxgrafhigh)/highpricegraph)|int)
+            {{ grafbottom-grafpriceoffset if pris2[1]|float == 9999.9999 else ((grafbottom)-([pris2[1]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int)
               - grafpriceoffset }}
           size: "{{ grafpricesize }}"
           color: "{% if pris2[1]|float >= highprice3 %}red{% else %}black{%endif%}"
@@ -140,9 +140,9 @@ action:
           x_start: "{{ spacing[2]|int-spacingwith }}"
           x_end: "{{ spacing[2]|int+spacingwith }}"
           y_start: >-
-            {{ grafbottom if pris2[2]|float == 9999.9999 else (grafbottom)-(pris2[2]|float*(maxgrafhigh)/highpricegraph)|int }}
+            {{ grafbottom if pris2[2]|float == 9999.9999 else (grafbottom)-([pris2[2]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int }}
           y_end: "{{ grafbottom }}"
-          width: "{% if pris2[2]|float <= lowprice3 %}4{% else %}1{%endif%}"
+          width: "{% if pris2[2] | float <= lowprice3 and pris2[1] | float > 0 %}4{% else %}1{% endif %}"
           fill: >-
             {% if pris2[2]|float >= highprice3 %}red{% elif pris2[2]|float <= lowprice3 %}white{% else %}black{%endif%}
           outline: black
@@ -156,11 +156,11 @@ action:
           anchor: mt
         - type: text
           value: >-
-            {{ "NA" if pris2[2]|float == 9999.9999 else ((pris2[2]|float + priceCorrector) * priceMultiplicator)|round(2) }}
+            {{ "NA" if pris2[2]|float == 9999.9999 else ((pris2[2]|float + priceCorrector) * priceMultiplicator)|round(decimalPlaces) }}
           font: /media/fonts/OpenSans-Regular.ttf
           x: "{{ spacing[2] }}"
           "y": >-
-            {{ grafbottom-grafpriceoffset if pris2[2]|float == 9999.9999 else ((grafbottom)-(pris2[2]|float*(maxgrafhigh)/highpricegraph)|int)
+            {{ grafbottom-grafpriceoffset if pris2[2]|float == 9999.9999 else ((grafbottom)-([pris2[2]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int)
               - grafpriceoffset }}
           size: "{{ grafpricesize }}"
           color: "{% if pris2[2]|float >= highprice3 %}red{% else %}black{%endif%}"
@@ -170,9 +170,9 @@ action:
           x_start: "{{ spacing[3]|int-spacingwith }}"
           x_end: "{{ spacing[3]|int+spacingwith }}"
           y_start: >-
-            {{ grafbottom if pris2[3]|float == 9999.9999 else (grafbottom)-(pris2[3]|float*(maxgrafhigh)/highpricegraph)|int }}
+            {{ grafbottom if pris2[3]|float == 9999.9999 else (grafbottom)-([pris2[3]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int }}
           y_end: "{{ grafbottom }}"
-          width: "{% if pris2[3]|float <= lowprice3 %}4{% else %}1{%endif%}"
+          width: "{% if pris2[3] | float <= lowprice3 and pris2[1] | float > 0 %}4{% else %}1{% endif %}"
           fill: >-
             {% if pris2[3]|float >= highprice3 %}red{% elif pris2[3]|float <= lowprice3 %}white{% else %}black{%endif%}
           outline: black
@@ -186,11 +186,11 @@ action:
           anchor: mt
         - type: text
           value: >-
-            {{ "NA" if pris2[3]|float == 9999.9999 else ((pris2[3]|float + priceCorrector) * priceMultiplicator)|round(2) }}
+            {{ "NA" if pris2[3]|float == 9999.9999 else ((pris2[3]|float + priceCorrector) * priceMultiplicator)|round(decimalPlaces) }}
           font: /media/fonts/OpenSans-Regular.ttf
           x: "{{ spacing[3] }}"
           "y": >-
-            {{ grafbottom-grafpriceoffset if pris2[3]|float == 9999.9999 else ((grafbottom)-(pris2[3]|float*(maxgrafhigh)/highpricegraph)|int)
+            {{ grafbottom-grafpriceoffset if pris2[3]|float == 9999.9999 else ((grafbottom)-([pris2[3]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int)
               - grafpriceoffset }}
           size: "{{ grafpricesize }}"
           color: "{% if pris2[3]|float >= highprice3 %}red{% else %}black{%endif%}"
@@ -200,9 +200,9 @@ action:
           x_start: "{{ spacing[4]|int-spacingwith }}"
           x_end: "{{ spacing[4]|int+spacingwith }}"
           y_start: >-
-            {{ grafbottom if pris2[4]|float == 9999.9999 else (grafbottom)-(pris2[4]|float*(maxgrafhigh)/highpricegraph)|int }}
+            {{ grafbottom if pris2[4]|float == 9999.9999 else (grafbottom)-([pris2[4]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int }}
           y_end: "{{ grafbottom }}"
-          width: "{% if pris2[4]|float <= lowprice3 %}4{% else %}1{%endif%}"
+          width: "{% if pris2[4] | float <= lowprice3 and pris2[1] | float > 0 %}4{% else %}1{% endif %}"
           fill: >-
             {% if pris2[4]|float >= highprice3 %}red{% elif pris2[4]|float <= lowprice3 %}white{% else %}black{%endif%}
           outline: black
@@ -216,11 +216,11 @@ action:
           anchor: mt
         - type: text
           value: >-
-            {{ "NA" if pris2[4]|float == 9999.9999 else ((pris2[4]|float + priceCorrector) * priceMultiplicator)|round(2) }}
+            {{ "NA" if pris2[4]|float == 9999.9999 else ((pris2[4]|float + priceCorrector) * priceMultiplicator)|round(decimalPlaces) }}
           font: /media/fonts/OpenSans-Regular.ttf
           x: "{{ spacing[4] }}"
           "y": >-
-            {{ grafbottom-grafpriceoffset if pris2[4]|float == 9999.9999 else ((grafbottom)-(pris2[4]|float*(maxgrafhigh)/highpricegraph)|int)
+            {{ grafbottom-grafpriceoffset if pris2[4]|float == 9999.9999 else ((grafbottom)-([pris2[4]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int)
               - grafpriceoffset }}
           size: "{{ grafpricesize }}"
           color: "{% if pris2[4]|float >= highprice3 %}red{% else %}black{%endif%}"
@@ -230,9 +230,9 @@ action:
           x_start: "{{ spacing[5]|int-spacingwith }}"
           x_end: "{{ spacing[5]|int+spacingwith }}"
           y_start: >-
-            {{ grafbottom if pris2[5]|float == 9999.9999 else (grafbottom)-(pris2[5]|float*(maxgrafhigh)/highpricegraph)|int }}
+            {{ grafbottom if pris2[5]|float == 9999.9999 else (grafbottom)-([pris2[5]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int }}
           y_end: "{{ grafbottom }}"
-          width: "{% if pris2[5]|float <= lowprice3 %}4{% else %}1{%endif%}"
+          width: "{% if pris2[5] | float <= lowprice3 and pris2[1] | float > 0 %}4{% else %}1{% endif %}"
           fill: >-
             {% if pris2[5]|float >= highprice3 %}red{% elif pris2[5]|float <= lowprice3 %}white{% else %}black{%endif%}
           outline: black
@@ -246,11 +246,11 @@ action:
           anchor: mt
         - type: text
           value: >-
-            {{ "NA" if pris2[5]|float == 9999.9999 else ((pris2[5]|float + priceCorrector) * priceMultiplicator)|round(2) }}
+            {{ "NA" if pris2[5]|float == 9999.9999 else ((pris2[5]|float + priceCorrector) * priceMultiplicator)|round(decimalPlaces) }}
           font: /media/fonts/OpenSans-Regular.ttf
           x: "{{ spacing[5] }}"
           "y": >-
-            {{ grafbottom-grafpriceoffset if pris2[5]|float == 9999.9999 else ((grafbottom)-(pris2[5]|float*(maxgrafhigh)/highpricegraph)|int)
+            {{ grafbottom-grafpriceoffset if pris2[5]|float == 9999.9999 else ((grafbottom)-([pris2[5]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int)
               - grafpriceoffset }}
           size: "{{ grafpricesize }}"
           color: "{% if pris2[5]|float >= highprice3 %}red{% else %}black{%endif%}"
@@ -260,9 +260,9 @@ action:
           x_start: "{{ spacing[6]|int-spacingwith }}"
           x_end: "{{ spacing[6]|int+spacingwith }}"
           y_start: >-
-            {{ grafbottom if pris2[6]|float == 9999.9999 else (grafbottom)-(pris2[6]|float*(maxgrafhigh)/highpricegraph)|int }}
+            {{ grafbottom if pris2[6]|float == 9999.9999 else (grafbottom)-([pris2[6]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int }}
           y_end: "{{ grafbottom }}"
-          width: "{% if pris2[6]|float <= lowprice3 %}4{% else %}1{%endif%}"
+          width: "{% if pris2[6] | float <= lowprice3 and pris2[1] | float > 0 %}4{% else %}1{% endif %}"
           fill: >-
             {% if pris2[6]|float >= highprice3 %}red{% elif pris2[6]|float <= lowprice3 %}white{% else %}black{%endif%}
           outline: black
@@ -276,11 +276,11 @@ action:
           anchor: mt
         - type: text
           value: >-
-            {{ "NA" if pris2[6]|float == 9999.9999 else ((pris2[6]|float + priceCorrector) * priceMultiplicator)|round(2) }}
+            {{ "NA" if pris2[6]|float == 9999.9999 else ((pris2[6]|float + priceCorrector) * priceMultiplicator)|round(decimalPlaces) }}
           font: /media/fonts/OpenSans-Regular.ttf
           x: "{{ spacing[6] }}"
           "y": >-
-            {{ grafbottom-grafpriceoffset if pris2[6]|float == 9999.9999 else ((grafbottom)-(pris2[6]|float*(maxgrafhigh)/highpricegraph)|int)
+            {{ grafbottom-grafpriceoffset if pris2[6]|float == 9999.9999 else ((grafbottom)-([pris2[6]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int)
               - grafpriceoffset }}
           size: "{{ grafpricesize }}"
           color: "{% if pris2[6]|float >= highprice3 %}red{% else %}black{%endif%}"
@@ -289,9 +289,9 @@ action:
           x_start: "{{ spacing[7]|int-spacingwith }}"
           x_end: "{{ spacing[7]|int+spacingwith }}"
           y_start: >-
-            {{ grafbottom if pris2[7]|float == 9999.9999 else (grafbottom)-(pris2[7]|float*(maxgrafhigh)/highpricegraph)|int }}
+            {{ grafbottom if pris2[7]|float == 9999.9999 else (grafbottom)-([pris2[7]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int }}
           y_end: "{{ grafbottom }}"
-          width: "{% if pris2[7]|float <= lowprice3 %}4{% else %}1{%endif%}"
+          width: "{% if pris2[7] | float <= lowprice3 and pris2[1] | float > 0 %}4{% else %}1{% endif %}"
           fill: >-
             {% if pris2[7]|float >= highprice3 %}red{% elif pris2[7]|float <= lowprice3 %}white{% else %}black{%endif%}
           outline: black
@@ -305,11 +305,11 @@ action:
           anchor: mt
         - type: text
           value: >-
-            {{ "NA" if pris2[7]|float == 9999.9999 else ((pris2[7]|float + priceCorrector) * priceMultiplicator)|round(2) }}
+            {{ "NA" if pris2[7]|float == 9999.9999 else ((pris2[7]|float + priceCorrector) * priceMultiplicator)|round(decimalPlaces) }}
           font: /media/fonts/OpenSans-Regular.ttf
           x: "{{ spacing[7] }}"
           "y": >-
-            {{ grafbottom-grafpriceoffset if pris2[7]|float == 9999.9999 else ((grafbottom)-(pris2[7]|float*(maxgrafhigh)/highpricegraph)|int)
+            {{ grafbottom-grafpriceoffset if pris2[7]|float == 9999.9999 else ((grafbottom)-([pris2[7]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int)
               - grafpriceoffset }}
           size: "{{ grafpricesize }}"
           color: "{% if pris2[7]|float >= highprice3 %}red{% else %}black{%endif%}"
@@ -319,9 +319,9 @@ action:
           x_start: "{{ spacing[8]|int-spacingwith }}"
           x_end: "{{ spacing[8]|int+spacingwith }}"
           y_start: >-
-            {{ grafbottom if pris2[8]|float == 9999.9999 else (grafbottom)-(pris2[8]|float*(maxgrafhigh)/highpricegraph)|int }}
+            {{ grafbottom if pris2[8]|float == 9999.9999 else (grafbottom)-([pris2[8]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int }}
           y_end: "{{ grafbottom }}"
-          width: "{% if pris2[8]|float <= lowprice3 %}4{% else %}1{%endif%}"
+          width: "{% if pris2[8] | float <= lowprice3 and pris2[1] | float > 0 %}4{% else %}1{% endif %}"
           fill: >-
             {% if pris2[8]|float >= highprice3 %}red{% elif pris2[8]|float <= lowprice3 %}white{% else %}black{%endif%}
           outline: black
@@ -335,11 +335,11 @@ action:
           anchor: mt
         - type: text
           value: >-
-            {{ "NA" if pris2[8]|float == 9999.9999 else ((pris2[8]|float + priceCorrector) * priceMultiplicator)|round(2) }}
+            {{ "NA" if pris2[8]|float == 9999.9999 else ((pris2[8]|float + priceCorrector) * priceMultiplicator)|round(decimalPlaces) }}
           font: /media/fonts/OpenSans-Regular.ttf
           x: "{{ spacing[8] }}"
           "y": >-
-            {{ grafbottom-grafpriceoffset if pris2[8]|float == 9999.9999 else ((grafbottom)-(pris2[8]|float*(maxgrafhigh)/highpricegraph)|int)
+            {{ grafbottom-grafpriceoffset if pris2[8]|float == 9999.9999 else ((grafbottom)-([pris2[8]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int)
               - grafpriceoffset }}
           size: "{{ grafpricesize }}"
           color: "{% if pris2[8]|float >= highprice3 %}red{% else %}black{%endif%}"
@@ -348,9 +348,9 @@ action:
           x_start: "{{ spacing[9]|int-spacingwith }}"
           x_end: "{{ spacing[9]|int+spacingwith }}"
           y_start: >-
-            {{ grafbottom if pris2[9]|float == 9999.9999 else (grafbottom)-(pris2[9]|float*(maxgrafhigh)/highpricegraph)|int }}
+            {{ grafbottom if pris2[9]|float == 9999.9999 else (grafbottom)-([pris2[9]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int }}
           y_end: "{{ grafbottom }}"
-          width: "{% if pris2[9]|float <= lowprice3 %}4{% else %}1{%endif%}"
+          width: "{% if pris2[9] | float <= lowprice3 and pris2[1] | float > 0 %}4{% else %}1{% endif %}"
           fill: >-
             {% if pris2[9]|float >= highprice3 %}red{% elif pris2[9]|float <= lowprice3 %}white{% else %}black{%endif%}
           outline: black
@@ -364,11 +364,11 @@ action:
           anchor: mt
         - type: text
           value: >-
-            {{ "NA" if pris2[9]|float == 9999.9999 else ((pris2[9]|float + priceCorrector) * priceMultiplicator)|round(2) }}
+            {{ "NA" if pris2[9]|float == 9999.9999 else ((pris2[9]|float + priceCorrector) * priceMultiplicator)|round(decimalPlaces) }}
           font: /media/fonts/OpenSans-Regular.ttf
           x: "{{ spacing[9] }}"
           "y": >-
-            {{ grafbottom-grafpriceoffset if pris2[9]|float == 9999.9999 else ((grafbottom)-(pris2[9]|float*(maxgrafhigh)/highpricegraph)|int)
+            {{ grafbottom-grafpriceoffset if pris2[9]|float == 9999.9999 else ((grafbottom)-([pris2[9]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int)
             - grafpriceoffset }}
           size: "{{ grafpricesize }}"
           color: "{% if pris2[9]|float >= highprice3 %}red{% else %}black{%endif%}"
@@ -378,9 +378,9 @@ action:
           x_start: "{{ spacing[10]|int-spacingwith }}"
           x_end: "{{ spacing[10]|int+spacingwith }}"
           y_start: >-
-            {{ grafbottom if pris2[10]|float == 9999.9999 else (grafbottom)-(pris2[10]|float*(maxgrafhigh)/highpricegraph)|int }}
+            {{ grafbottom if pris2[10]|float == 9999.9999 else (grafbottom)-([pris2[10]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int }}
           y_end: "{{ grafbottom }}"
-          width: "{% if pris2[10]|float <= lowprice3 %}4{% else %}1{%endif%}"
+          width: "{% if pris2[10] | float <= lowprice3 and pris2[1] | float > 0 %}4{% else %}1{% endif %}"
           fill: >-
             {% if pris2[10]|float >= highprice3 %}red{% elif pris2[10]|float <= lowprice3 %}white{% else %}black{%endif%}
           outline: black
@@ -394,11 +394,11 @@ action:
           anchor: mt
         - type: text
           value: >-
-            {{ "NA" if pris2[10]|float == 9999.9999 else ((pris2[10]|float + priceCorrector) * priceMultiplicator)|round(2) }}
+            {{ "NA" if pris2[10]|float == 9999.9999 else ((pris2[10]|float + priceCorrector) * priceMultiplicator)|round(decimalPlaces) }}
           font: /media/fonts/OpenSans-Regular.ttf
           x: "{{ spacing[10] }}"
           "y": >-
-            {{ grafbottom-grafpriceoffset if pris2[10]|float == 9999.9999 else ((grafbottom)-(pris2[10]|float*(maxgrafhigh)/highpricegraph)|int)
+            {{ grafbottom-grafpriceoffset if pris2[10]|float == 9999.9999 else ((grafbottom)-([pris2[10]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int)
               - grafpriceoffset }}
           size: "{{ grafpricesize }}"
           color: "{% if pris2[10]|float >= highprice3 %}red{% else %}black{%endif%}"
@@ -408,9 +408,9 @@ action:
           x_start: "{{ spacing[11]|int-spacingwith }}"
           x_end: "{{ spacing[11]|int+spacingwith }}"
           y_start: >-
-            {{ grafbottom if pris2[11]|float == 9999.9999 else (grafbottom)-(pris2[11]|float*(maxgrafhigh)/highpricegraph)|int }}
+            {{ grafbottom if pris2[11]|float == 9999.9999 else (grafbottom)-([pris2[11]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int }}
           y_end: "{{ grafbottom }}"
-          width: "{% if pris2[11]|float <= lowprice3 %}4{% else %}1{%endif%}"
+          width: "{% if pris2[11] | float <= lowprice3 and pris2[1] | float > 0 %}4{% else %}1{% endif %}"
           fill: >-
             {% if pris2[11]|float >= highprice3 %}red{% elif pris2[11]|float <= lowprice3 %}white{% else %}black{%endif%}
           outline: black
@@ -424,11 +424,11 @@ action:
           anchor: mt
         - type: text
           value: >-
-            {{ "NA" if pris2[11]|float == 9999.9999 else ((pris2[11]|float + priceCorrector) * priceMultiplicator)|round(2) }}
+            {{ "NA" if pris2[11]|float == 9999.9999 else ((pris2[11]|float + priceCorrector) * priceMultiplicator)|round(decimalPlaces) }}
           font: /media/fonts/OpenSans-Regular.ttf
           x: "{{ spacing[11] }}"
           "y": >-
-            {{ grafbottom-grafpriceoffset if pris2[11]|float == 9999.9999 else ((grafbottom)-(pris2[11]|float*(maxgrafhigh)/highpricegraph)|int)
+            {{ grafbottom-grafpriceoffset if pris2[11]|float == 9999.9999 else ((grafbottom)-([pris2[11]|float*(maxgrafhigh)/highpricegraph, 0] | max)|int)
               - grafpriceoffset }}
           size: "{{ grafpricesize }}"
           color: "{% if pris2[11]|float >= highprice3 %}red{% else %}black{%endif%}"
@@ -438,8 +438,9 @@ variables:
   # configure from here
   nordpoolSensor: 'sensor.nordpool_kwh_se4_sek_3_095_025'
   priceCorrector: 0.105 # Surcharge as fixed amount (electricity certificates, trading fees or similar)
-  priceMultiplicator: 1.0 # Surcharge as percentage (VAT is included in Noredpool prices though)
+  priceMultiplicator: 1.0 # Surcharge as percentage (VAT is included in Nordpool prices though). Use 100 to show øre/cents
   graphLowestMaximum: 1 # This is the lowest maximum value the graph will use, to give better indication of the lowest prices
+  decimalPlaces: 1 # Number of decimal places to use when showing prices
   # / configure end
 
   spacing: "{{ range(16, 281, 24) | list }}"
@@ -461,12 +462,12 @@ variables:
     {% else %}
       {{ today + fallback_tomorrow }}
     {% endif %}
-  currentprice: "{{ ((prices[current_hour] + priceCorrector) * priceMultiplicator) | round(2) }}"
+  currentprice: "{{ ((prices[current_hour] + priceCorrector) * priceMultiplicator) | round(decimalPlaces) }}"
   next_12_hours_prices: "{{ prices[current_hour:current_hour+12] }}"
   pris2: "{{ next_12_hours_prices }}" # compatible variable name
-  lowprice: "{{ (((next_12_hours_prices | min) + priceCorrector) * priceMultiplicator) | round(2) }}"
-  highprice: "{{ (((next_12_hours_prices | max) + priceCorrector) * priceMultiplicator) | round(2) }}"
-  highpricegraph: "{{ [highprice | float, graphLowestMaximum] | max }}"
+  lowprice: "{{ (((next_12_hours_prices | min) + priceCorrector) * priceMultiplicator) | round(decimalPlaces) }}"
+  highprice: "{{ (((next_12_hours_prices | max) + priceCorrector) * priceMultiplicator) | round(decimalPlaces) }}"
+  highpricegraph: "{{ [next_12_hours_prices | max | float, graphLowestMaximum] | max }}"
   sorted_prices: "{{ next_12_hours_prices | sort }}" # to pick high and low thirds
   lowprice3: "{{ sorted_prices[2] }}"  # third lowest price
   highprice3: "{{ sorted_prices[:-3] | last }}"  # third highest price
