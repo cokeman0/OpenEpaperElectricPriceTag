@@ -441,6 +441,8 @@ variables:
   priceMultiplicator: 1.0 # Surcharge as percentage (VAT is included in Nordpool prices though). Use 100 to show øre/cents
   graphLowestMaximum: 1 # This is the lowest maximum value the graph will use, to give better indication of the lowest prices
   decimalPlaces: 1 # Number of decimal places to use when showing prices
+  # Choose how to calculate the hourly value when the integration delivers 15 minute prices (mean|min|max)
+  calculate_hourly_price: mean
   # / configure end
 
   spacing: "{{ range(16, 281, 24) | list }}"
@@ -452,15 +454,58 @@ variables:
   time24: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23']
   time: "{{ time24 + time24 }}"
   current_hour: "{{ now().hour }}"
-  today: "{{ state_attr(nordpoolSensor, 'today') }}"
-  tomorrow: "{{ state_attr(nordpoolSensor, 'tomorrow') }}"
+  today: "{{ state_attr(nordpoolSensor, 'today') }}"  
+  tomorrow: "{{ state_attr(nordpoolSensor, 'tomorrow') }}"  
   tomorrow_valid: "{{ state_attr(nordpoolSensor, 'tomorrow_valid') }}"
+  # Fallback for when tomorrow data is not yet published (12 hours worth)
   fallback_tomorrow: [9999.9999, 9999.9999, 9999.9999, 9999.9999, 9999.9999, 9999.9999, 9999.9999, 9999.9999, 9999.9999, 9999.9999, 9999.9999, 9999.9999]
+  # Fallback for quarter-hour data (12 hours * 4 = 48 intervals)
+  fallback_tomorrow_quarter: [
+    9999.9999, 9999.9999, 9999.9999, 9999.9999,
+    9999.9999, 9999.9999, 9999.9999, 9999.9999,
+    9999.9999, 9999.9999, 9999.9999, 9999.9999,
+    9999.9999, 9999.9999, 9999.9999, 9999.9999,
+    9999.9999, 9999.9999, 9999.9999, 9999.9999,
+    9999.9999, 9999.9999, 9999.9999, 9999.9999,
+    9999.9999, 9999.9999, 9999.9999, 9999.9999,
+    9999.9999, 9999.9999, 9999.9999, 9999.9999,
+    9999.9999, 9999.9999, 9999.9999, 9999.9999,
+    9999.9999, 9999.9999, 9999.9999, 9999.9999,
+    9999.9999, 9999.9999, 9999.9999, 9999.9999,
+    9999.9999, 9999.9999, 9999.9999, 9999.9999
+  ]
+  # Unified hourly price list (either directly from integration hourly list or aggregated from quarter-hour list)
   prices: >-
-    {% if tomorrow_valid %}
-      {{ today + tomorrow }}
+    {% set is_quarter = (today | length) > 24 %}
+    {% if not is_quarter %}
+      {# Old behaviour: already hourly #}
+      {% if tomorrow_valid %}
+        {{ today + tomorrow }}
+      {% else %}
+        {{ today + fallback_tomorrow }}
+      {% endif %}
     {% else %}
-      {{ today + fallback_tomorrow }}
+      {# New behaviour: quarter-hour data -> aggregate to hourly using selected method #}
+      {% set raw_today = today %}
+      {% if tomorrow_valid %}
+        {% set raw_tomorrow = tomorrow %}
+      {% else %}
+        {% set raw_tomorrow = fallback_tomorrow_quarter %}
+      {% endif %}
+      {% set raw_all = raw_today + raw_tomorrow %}
+      {% set hours = (raw_all | length) // 4 %}
+      [
+      {%- for h in range(hours) %}
+        {% set block = raw_all[h*4:(h+1)*4] %}
+        {% if calculate_hourly_price == 'min' %}
+          {{ block | min }}
+        {% elif calculate_hourly_price == 'max' %}
+          {{ block | max }}
+        {% else %}
+          {{ (block | sum / (block | length)) }}
+        {% endif %}{% if not loop.last %}, {% endif %}
+      {%- endfor %}
+      ]
     {% endif %}
   currentprice: "{{ ((prices[current_hour] + priceCorrector) * priceMultiplicator) | round(decimalPlaces) }}"
   next_12_hours_prices: "{{ prices[current_hour:current_hour+12] }}"
